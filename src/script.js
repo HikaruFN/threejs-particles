@@ -9,14 +9,19 @@ import dat from "dat.gui";
 /*Scene*/
 const scene = new THREE.Scene();
 const canvas = document.querySelector("canvas.webgl");
-/*Meshe*/
-/*Cube*/
-const cube = new THREE.Mesh(
-  new THREE.BoxBufferGeometry(1, 1, 1),
-  new THREE.MeshBasicMaterial({ color: "white" })
-);
-scene.add(cube);
 
+/*Textures*/
+const textureLoader = new THREE.TextureLoader();
+
+/*Meshe*/
+/*Particles*/
+const particlesGeometry = new THREE.BufferGeometry();
+const particlesMaterial = new THREE.PointsMaterial({
+  size: 0.02 /*Dimensione della particella*/,
+  sizeAttenuation: true /*Piu grande se vicina, piu piccola se lontana*/,
+});
+const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+scene.add(particles);
 /*Sizes*/
 const sizes = {
   width: window.innerWidth,
@@ -46,9 +51,11 @@ const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.render(scene, camera);
+
 /*Controls*/
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+
 /*Animation*/
 const clock = new THREE.Clock();
 const tick = () => {
